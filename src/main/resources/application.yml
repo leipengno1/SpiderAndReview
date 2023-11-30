@@ -1,0 +1,79 @@
+server:
+  port: 8082
+  context-path: /
+
+spring:
+  thymeleaf:
+    mode: LEGACYHTML5
+    encoding: UTF-8
+    check-template-location: true
+    enabled: true
+    prefix: classpath:/static/
+    content-type: text/html
+    suffix: .html
+    cache: false
+  mvc:
+    static-path-pattern: /static/**
+    view:
+      prefix: /view
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://120.27.200.97:3306/pharmcube?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false
+    username: dev1
+    password: Dev1<cfmmc.com
+  http:
+    encoding:
+      charset: UTF-8
+    enabled: true
+    force: true
+
+
+###################  log配置  ###################
+logging:
+  level:
+    root: info
+  file: spiderAndReview.log
+  path: D:/weblogs/spiderAndReview/
+
+###################  mybatis-plus配置  ###################
+mybatis-plus:
+  mapper-locations: classpath*:com/dao/*.xml
+  typeAliasesPackage: com.model
+  global-config:
+    id-type: 2  #0:数据库ID自增   1:用户输入id  2:全局唯一id(IdWorker)  3:全局唯一ID(uuid)
+    db-column-underline: true
+    refresh-mapper: true
+    logic-delete-value: 0
+    logic-not-delete-value: 1
+    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector #逻辑删除用
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false #配置的缓存的全局开关
+    lazyLoadingEnabled: true #延时加载的开关
+    multipleResultSetsEnabled: true #开启的话，延时加载一个属性时会加载该对象全部属性，否则按需加载属性
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #打印sql语句,调试用
+    
+###################  爬虫配置  ###################
+spider:
+  retryTimes: 3
+  sleepTime: 100
+  #starUrl: http://db.pharmcube.com/database/cfda?retryTime=1  #爬取入口
+  starUrl: http://db.pharmcube.com/database/cfda/detail/cfda_inlet_instrument_history_data/12437?retryTime=1
+  #starUrl: http://db.pharmcube.com/database/cfda/result?searchTable=国产器械&retryTime=1&totalNum=9850&currentPage=1
+  savePath: D:/files/temp/data/cfda.txt			#文件存放路径
+  detailPath: http://db.pharmcube.com/database/cfda/detail/    #详情接口，勿改
+  threadNum: 1		#启动线程数
+  driver: phantomjs
+  execPath: D:/projects/Workspace/phantomjs_2.0.exe		#phantomjs路径，linux下要安装phantomjs
+  driverLoglevel: INFO
+  driverLogFile: D:/weblogs/spiderAndReview/phantomjsdriver.log
+  proxyType: on
+  proxyPool: http://proxylist.fatezero.org/proxy.list
+  proxyCheck: http://icanhazip.com/
+
+  
+
+
+
+
+
